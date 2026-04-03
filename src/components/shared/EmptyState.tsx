@@ -7,6 +7,7 @@ interface EmptyStateProps {
   description: string
   actionLabel?: string
   actionHref?: string
+  action?: React.ReactNode
   icon?: React.ComponentType<{ className?: string }>
 }
 
@@ -15,6 +16,7 @@ export function EmptyState({
   description,
   actionLabel,
   actionHref,
+  action,
   icon: Icon,
 }: EmptyStateProps) {
   return (
@@ -25,7 +27,8 @@ export function EmptyState({
         <p className="text-sm text-muted-foreground mb-6">
           {description}
         </p>
-        {actionLabel && actionHref && (
+        {action}
+        {!action && actionLabel && actionHref && (
           <Button render={<Link href={actionHref} />}>
             <Plus className="mr-2 h-4 w-4" />
             {actionLabel}
