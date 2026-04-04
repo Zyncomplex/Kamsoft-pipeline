@@ -1,6 +1,5 @@
 import { getClients } from '@/services/clients.service'
 import { PageHeader } from '@/components/shared/PageHeader'
-import { Button } from '@/components/ui/button'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'

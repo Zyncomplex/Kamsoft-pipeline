@@ -11,8 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { CircleUser, Menu, Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { CircleUser, Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'

@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { createClientRecord, updateClientRecord, deleteClientRecord } from '@/services/clients.service'
 import { clientSchema } from '@/lib/validations/client.schema'
 
-export async function createClientAction(_prevState: any, formData: FormData) {
+export async function createClientAction(_prevState: unknown, formData: FormData) {
   const data = Object.fromEntries(formData.entries())
   const parsed = clientSchema.safeParse(data)
 
@@ -15,15 +15,15 @@ export async function createClientAction(_prevState: any, formData: FormData) {
 
   try {
     await createClientRecord(parsed.data)
-  } catch (err: any) {
-    return { message: err.message }
+  } catch (err) {
+    return { message: err instanceof Error ? err.message : String(err) }
   }
 
   revalidatePath('/clients')
   redirect('/clients')
 }
 
-export async function updateClientAction(id: string, _prevState: any, formData: FormData) {
+export async function updateClientAction(id: string, _prevState: unknown, formData: FormData) {
   const data = Object.fromEntries(formData.entries())
   const parsed = clientSchema.safeParse(data)
 
@@ -33,8 +33,8 @@ export async function updateClientAction(id: string, _prevState: any, formData: 
 
   try {
     await updateClientRecord(id, parsed.data)
-  } catch (err: any) {
-    return { message: err.message }
+  } catch (err) {
+    return { message: err instanceof Error ? err.message : String(err) }
   }
 
   revalidatePath(`/clients/${id}`)

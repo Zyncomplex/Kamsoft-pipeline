@@ -1,6 +1,5 @@
 import { getVendor } from '@/services/vendors.service'
 import { PageHeader } from '@/components/shared/PageHeader'
-import { Button } from '@/components/ui/button'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { Edit, Trash2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'

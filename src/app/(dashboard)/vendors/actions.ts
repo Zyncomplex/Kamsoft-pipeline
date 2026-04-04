@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { createVendorRecord, updateVendorRecord, deleteVendorRecord } from '@/services/vendors.service'
 import { vendorSchema } from '@/lib/validations/vendor.schema'
 
-export async function createVendorAction(_prevState: any, formData: FormData) {
+export async function createVendorAction(_prevState: unknown, formData: FormData) {
   const data = Object.fromEntries(formData.entries())
   const parsed = vendorSchema.safeParse(data)
 
@@ -15,15 +15,15 @@ export async function createVendorAction(_prevState: any, formData: FormData) {
 
   try {
     await createVendorRecord(parsed.data)
-  } catch (err: any) {
-    return { message: err.message }
+  } catch (err) {
+    return { message: err instanceof Error ? err.message : String(err) }
   }
 
   revalidatePath('/vendors')
   redirect('/vendors')
 }
 
-export async function updateVendorAction(id: string, _prevState: any, formData: FormData) {
+export async function updateVendorAction(id: string, _prevState: unknown, formData: FormData) {
   const data = Object.fromEntries(formData.entries())
   const parsed = vendorSchema.safeParse(data)
 
@@ -33,8 +33,8 @@ export async function updateVendorAction(id: string, _prevState: any, formData: 
 
   try {
     await updateVendorRecord(id, parsed.data)
-  } catch (err: any) {
-    return { message: err.message }
+  } catch (err) {
+    return { message: err instanceof Error ? err.message : String(err) }
   }
 
   revalidatePath(`/vendors/${id}`)
