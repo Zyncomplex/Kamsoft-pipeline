@@ -1,22 +1,27 @@
 import { getVendor } from '@/services/vendors.service'
+import { getProductionByVendor } from '@/services/production.service'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { buttonVariants } from '@/components/ui/button-variants'
-import { Edit, Trash2, ArrowLeft } from 'lucide-react'
+import { ProductionTable } from '@/components/production/ProductionTable'
+import { Edit, Trash2, ArrowLeft, Factory, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { DateDisplay } from '@/components/shared/DateDisplay'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { deleteVendorAction } from '../actions'
 import { cn } from '@/lib/utils'
 
 interface VendorDetailsPageProps {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 export default async function VendorDetailsPage({ params }: VendorDetailsPageProps) {
-  const { id } = await params
-  const vendor = await getVendor(id)
+  const { id } = params
+  const [vendor, production] = await Promise.all([
+    getVendor(id),
+    getProductionByVendor(id)
+  ])
 
   if (!vendor || !vendor.is_active) {
     notFound()
@@ -67,23 +72,23 @@ export default async function VendorDetailsPage({ params }: VendorDetailsPagePro
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Speciality</p>
-              <p>{vendor.speciality || '—'}</p>
+              <p className="font-semibold">{vendor.speciality || '—'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Contact Person</p>
-              <p>{vendor.contact_person || '—'}</p>
+              <p className="font-semibold">{vendor.contact_person || '—'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Email</p>
-              <p>{vendor.email || '—'}</p>
+              <p className="font-semibold">{vendor.email || '—'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Phone</p>
-              <p>{vendor.phone || '—'}</p>
+              <p className="font-semibold">{vendor.phone || '—'}</p>
             </div>
             <div className="sm:col-span-2">
               <p className="text-sm font-medium text-muted-foreground">Address</p>
-              <p>{vendor.address || '—'}</p>
+              <p className="font-semibold">{vendor.address || '—'}</p>
             </div>
           </CardContent>
         </Card>
@@ -109,21 +114,30 @@ export default async function VendorDetailsPage({ params }: VendorDetailsPagePro
             <CardTitle className="text-lg">Notes</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="whitespace-pre-wrap text-sm">
+            <p className="whitespace-pre-wrap text-sm text-slate-600 italic">
               {vendor.notes || "No additional notes for this vendor."}
             </p>
           </CardContent>
         </Card>
 
-        {/* Placeholder for future Production Module integration */}
-        <Card className="md:col-span-3 opacity-50 border-dashed">
-          <CardHeader>
-            <CardTitle className="text-lg">Recent Production Orders</CardTitle>
-          </CardHeader>
-          <CardContent className="py-8 text-center text-muted-foreground italic">
-            Order history will be available after Phase 4 implementation.
-          </CardContent>
-        </Card>
+        <div className="md:col-span-3 space-y-4">
+          <div className="flex justify-between items-end px-1">
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-blue-500 rounded-lg">
+                <Factory className="h-4 w-4 text-white" />
+              </div>
+              <h2 className="text-xl font-bold tracking-tight">Active Production Orders</h2>
+            </div>
+            <Link 
+              href={`/production/new?vendor_id=${id}`}
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
+            >
+              <Plus className="h-4 w-4" />
+              New Order
+            </Link>
+          </div>
+          <ProductionTable orders={production as any} />
+        </div>
       </div>
     </div>
   )

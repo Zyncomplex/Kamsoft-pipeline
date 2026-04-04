@@ -2,10 +2,14 @@ import { notFound } from 'next/navigation'
 import { getDeal } from '@/services/deals.service'
 import { getTasksByDeal } from '@/services/tasks.service'
 import { getActivitiesByDeal } from '@/services/activities.service'
+import { getProductionByDeal } from '@/services/production.service'
+import { getShipments } from '@/services/shipments.service'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { DealCard } from '@/components/deals/DealCard'
 import { TaskCard } from '@/components/tasks/TaskCard'
+import { ProductionTable } from '@/components/production/ProductionTable'
+import { ShipmentTable } from '@/components/shipments/ShipmentTable'
 import { ActivityTimeline } from '@/components/shared/ActivityTimeline'
 import { DEAL_STAGES } from '@/lib/constants'
 import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
@@ -25,7 +29,9 @@ import {
   Phone, 
   MapPin, 
   Clock,
-  ExternalLink
+  ExternalLink,
+  Factory,
+  Truck
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -36,10 +42,12 @@ interface DealPageProps {
 export default async function DealDetailPage({ params }: DealPageProps) {
   const { id } = params
   
-  const [deal, tasks, activities] = await Promise.all([
+  const [deal, tasks, activities, production, shipments] = await Promise.all([
     getDeal(id),
     getTasksByDeal(id),
-    getActivitiesByDeal(id)
+    getActivitiesByDeal(id),
+    getProductionByDeal(id),
+    getShipments({ dealId: id })
   ])
 
   if (!deal) notFound()
@@ -187,11 +195,11 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               <TabsTrigger value="tasks" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
                 Tasks ({tasks.length})
               </TabsTrigger>
-              <TabsTrigger value="production" className="data-[state=active]:bg-white data-[state=active]:shadow-sm" disabled>
-                Production
+              <TabsTrigger value="production" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                Production ({production.length})
               </TabsTrigger>
-              <TabsTrigger value="shipments" className="data-[state=active]:bg-white data-[state=active]:shadow-sm" disabled>
-                Shipments
+              <TabsTrigger value="shipments" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                Logistics ({shipments.length})
               </TabsTrigger>
             </TabsList>
             
@@ -216,6 +224,32 @@ export default async function DealDetailPage({ params }: DealPageProps) {
                   <p className="text-sm text-slate-500 italic">No tasks assigned to this deal.</p>
                 </div>
               )}
+            </TabsContent>
+
+            <TabsContent value="production" className="space-y-4">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-bold text-slate-800">Manufacturing Orders</h3>
+                <Link 
+                  href={`/production/new?deal_id=${id}`} 
+                  className="text-xs font-bold text-primary flex items-center gap-1 hover:underline"
+                >
+                  <Plus className="h-3 w-3" /> Initiate Production
+                </Link>
+              </div>
+              <ProductionTable orders={production as any} />
+            </TabsContent>
+
+            <TabsContent value="shipments" className="space-y-4">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-bold text-slate-800">Logistics Tracking</h3>
+                <Link 
+                  href={`/shipments/new?deal_id=${id}`} 
+                  className="text-xs font-bold text-primary flex items-center gap-1 hover:underline"
+                >
+                  <Plus className="h-3 w-3" /> Create Shipment
+                </Link>
+              </div>
+              <ShipmentTable shipments={shipments as any} />
             </TabsContent>
           </Tabs>
         </div>

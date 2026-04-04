@@ -1,21 +1,82 @@
-import { EmptyState } from '@/components/shared/EmptyState'
-import { LayoutDashboard } from 'lucide-react'
+import React, { Suspense } from 'react'
+import { getDashboardStats, getDashboardWidgets } from '@/services/dashboard.service'
+import { StatCard } from '@/components/dashboard/StatCard'
+import { DashboardWidgets } from '@/components/dashboard/DashboardWidgets'
+import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { 
+  Briefcase, 
+  CheckSquare, 
+  Truck, 
+  TrendingUp,
+  AlertCircle,
+  Clock
+} from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+
+export const metadata = {
+  title: 'Dashboard - Sales Ops CRM',
+}
+
+async function DashboardOverview() {
+  const stats = await getDashboardStats()
+  const widgets = await getDashboardWidgets()
+
+  return (
+    <div className="space-y-8">
+      {/* KPI Section */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          title="Active Deals"
+          value={stats?.active_deals_count || 0}
+          description="Deals in progress"
+          icon={Briefcase}
+        />
+        <StatCard
+          title="Open Tasks"
+          value={stats?.pending_tasks_count || 0}
+          description="Requiring attention"
+          icon={CheckSquare}
+          className="border-l-blue-500 border-l-2"
+        />
+        <StatCard
+          title="In Production"
+          value={stats?.total_production_orders || 0}
+          description="Manufacturing stage"
+          icon={TrendingUp}
+        />
+        <StatCard
+          title="Active Shipments"
+          value={stats?.active_shipments_count || 0}
+          description="Logistics pipeline"
+          icon={Truck}
+        />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-1">
+        <DashboardWidgets 
+          tasks={widgets.activeTasks}
+          deals={widgets.dealsInProduction}
+          production={widgets.flaggedProduction}
+          shipments={widgets.activeShipments}
+        />
+      </div>
+    </div>
+  )
+}
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {/* Placeholder for StatCards - to be added in Phase 4 */}
-        <div className="h-24 bg-muted animate-pulse rounded-lg bg-orange-200/20" />
-        <div className="h-24 bg-muted animate-pulse rounded-lg bg-cyan-200/20" />
-        <div className="h-24 bg-muted animate-pulse rounded-lg bg-emerald-200/20" />
-        <div className="h-24 bg-muted animate-pulse rounded-lg bg-slate-200/20" />
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight">Executive Summary</h1>
+        <p className="text-muted-foreground italic">
+          At-a-glance operational health and pipeline tracking.
+        </p>
       </div>
-      <EmptyState
-        title="Welcome to SalesOps CRM"
-        description="Your operational dashboard is under construction. Once data is added, you'll see your daily tasks, deal alerts, and production delays here."
-        icon={LayoutDashboard}
-      />
+
+      <Suspense fallback={<div className="flex justify-center py-12"><LoadingSpinner /></div>}>
+        <DashboardOverview />
+      </Suspense>
     </div>
   )
 }
