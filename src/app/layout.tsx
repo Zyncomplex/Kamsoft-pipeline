@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SalesOps CRM",
+  title: "Kamsoft SalesOps",
   description: "Sales Operations CRM built with Next.js",
 };
 

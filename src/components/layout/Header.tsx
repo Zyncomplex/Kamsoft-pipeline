@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 import { NAV_ITEMS } from '@/lib/constants'
 import {
   DropdownMenu,
@@ -19,7 +20,7 @@ import { GlobalSearch } from './GlobalSearch'
 
 export function Header() {
   const pathname = usePathname()
-  const currentTitle = NAV_ITEMS.find((item) => item.href === pathname)?.label ?? 'SalesOps CRM'
+  const currentTitle = NAV_ITEMS.find((item) => item.href === pathname)?.label ?? 'Kamsoft SalesOps'
 
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -42,7 +43,8 @@ export function Header() {
               href="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <span className="text-xl">SalesOps CRM</span>
+              <Image src="/logo.png" alt="Logo" width={28} height={28} className="rounded-sm" />
+              <span className="text-xl">Kamsoft SalesOps</span>
             </Link>
             {NAV_ITEMS.map((item) => (
               <Link

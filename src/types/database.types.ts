@@ -100,7 +100,9 @@ export type Database = {
       deals: {
         Row: {
           actual_close_date: string | null
+          artwork_url: string | null
           assigned_to: string | null
+          backing_type: string | null
           client_id: string
           created_at: string
           created_by: string | null
@@ -112,7 +114,11 @@ export type Database = {
           next_action: string | null
           next_action_date: string | null
           notes: string | null
+          patch_height: number | null
+          patch_type: string | null
+          patch_width: number | null
           product_description: string | null
+          promo_code: string | null
           quantity: number | null
           stage: Database["public"]["Enums"]["deal_stage"]
           total_value: number | null
@@ -121,7 +127,9 @@ export type Database = {
         }
         Insert: {
           actual_close_date?: string | null
+          artwork_url?: string | null
           assigned_to?: string | null
+          backing_type?: string | null
           client_id: string
           created_at?: string
           created_by?: string | null
@@ -133,7 +141,11 @@ export type Database = {
           next_action?: string | null
           next_action_date?: string | null
           notes?: string | null
+          patch_height?: number | null
+          patch_type?: string | null
+          patch_width?: number | null
           product_description?: string | null
+          promo_code?: string | null
           quantity?: number | null
           stage?: Database["public"]["Enums"]["deal_stage"]
           total_value?: number | null
@@ -142,7 +154,9 @@ export type Database = {
         }
         Update: {
           actual_close_date?: string | null
+          artwork_url?: string | null
           assigned_to?: string | null
+          backing_type?: string | null
           client_id?: string
           created_at?: string
           created_by?: string | null
@@ -154,7 +168,11 @@ export type Database = {
           next_action?: string | null
           next_action_date?: string | null
           notes?: string | null
+          patch_height?: number | null
+          patch_type?: string | null
+          patch_width?: number | null
           product_description?: string | null
+          promo_code?: string | null
           quantity?: number | null
           stage?: Database["public"]["Enums"]["deal_stage"]
           total_value?: number | null

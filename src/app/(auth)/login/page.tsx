@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">SalesOps CRM</CardTitle>
+        <CardTitle className="text-2xl">Kamsoft SalesOps</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
       </CardHeader>
       <CardContent>

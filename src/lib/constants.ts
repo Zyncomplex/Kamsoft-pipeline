@@ -69,3 +69,27 @@ export const USER_ROLES = [
   { value: 'production', label: 'Production' },
   { value: 'logistics', label: 'Logistics' },
 ]
+
+export const PATCH_TYPES = [
+  'Embroidered',
+  'Woven',
+  'Dye Sublimation',
+  'Felt',
+  'PVC',
+  'Leather',
+  'Chenille',
+  'Blank',
+  'Bullion Crest',
+  'Combination',
+]
+
+export const BACKING_TYPES = [
+  'Unbacked',
+  'Plastic',
+  'Heat Seal',
+  'Hook & Loop',
+  'Self Stick',
+  'Pin',
+  'Magnetic',
+  'Not Sure',
+]

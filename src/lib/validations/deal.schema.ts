@@ -17,6 +17,12 @@ export const dealSchema = z.object({
   next_action: z.string().max(500).optional().or(z.literal('')),
   next_action_date: z.string().optional().or(z.literal('')),
   notes: z.string().max(2000).optional().or(z.literal('')),
+  patch_type: z.string().max(255).optional().or(z.literal('')),
+  backing_type: z.string().max(255).optional().or(z.literal('')),
+  patch_width: z.preprocess((val) => (val === '' ? undefined : val), z.coerce.number().positive().optional()),
+  patch_height: z.preprocess((val) => (val === '' ? undefined : val), z.coerce.number().positive().optional()),
+  promo_code: z.string().max(50).optional().or(z.literal('')),
+  artwork_url: z.string().max(1000).optional().or(z.literal('')),
 })
 
 export type DealFormValues = z.infer<typeof dealSchema>

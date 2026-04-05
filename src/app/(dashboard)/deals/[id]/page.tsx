@@ -33,7 +33,10 @@ import {
   Clock,
   ExternalLink,
   Factory,
-  Truck
+  Truck,
+  Package,
+  Tag,
+  Ruler
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -194,6 +197,49 @@ export default async function DealDetailPage({ params }: DealPageProps) {
               </CardContent>
             </Card>
           </div>
+
+          {/* Product Specifications Card */}
+          <Card className="shadow-sm border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-600 flex items-center gap-2">
+                <Package className="h-4 w-4" />
+                Product Specifications
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Patch Type</p>
+                  <p className="text-sm font-medium text-slate-700">{deal.patch_type || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Backing Type</p>
+                  <p className="text-sm font-medium text-slate-700">{deal.backing_type || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Dimensions (W x H)</p>
+                  <p className="text-sm font-medium text-slate-700 flex items-center gap-1">
+                    <Ruler className="h-3 w-3 text-slate-400"/>
+                    {deal.patch_width || '?'} x {deal.patch_height || '?'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Promo Code</p>
+                  <p className="text-sm font-medium text-slate-700 flex items-center gap-1">
+                    <Tag className="h-3 w-3 text-slate-400"/>
+                    {deal.promo_code || '—'}
+                  </p>
+                </div>
+              </div>
+              {deal.artwork_url && (
+                <div className="pt-2 border-t mt-2">
+                  <a href={deal.artwork_url} target="_blank" rel="noreferrer" className="text-xs text-primary font-bold inline-flex items-center gap-1 hover:underline">
+                    View Attached Artwork <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           <Tabs defaultValue="tasks" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-6 bg-slate-100 p-1">

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select'
 import { createDealAction, updateDealAction } from '@/app/(dashboard)/deals/actions'
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
-import { DEAL_STAGES } from '@/lib/constants'
+import { DEAL_STAGES, PATCH_TYPES, BACKING_TYPES } from '@/lib/constants'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -74,6 +74,12 @@ export function DealForm({ initialData, clients, profiles }: DealFormProps) {
       next_action: '',
       next_action_date: '',
       notes: '',
+      patch_type: '',
+      backing_type: '',
+      patch_width: undefined,
+      patch_height: undefined,
+      promo_code: '',
+      artwork_url: '',
     },
   })
 
@@ -105,6 +111,16 @@ export function DealForm({ initialData, clients, profiles }: DealFormProps) {
         name="stage"
         control={control}
         render={({ field }) => <input type="hidden" name="stage" value={field.value} />}
+      />
+      <Controller
+        name="patch_type"
+        control={control}
+        render={({ field }) => <input type="hidden" name="patch_type" value={field.value || ''} />}
+      />
+      <Controller
+        name="backing_type"
+        control={control}
+        render={({ field }) => <input type="hidden" name="backing_type" value={field.value || ''} />}
       />
 
       <Card>
@@ -195,6 +211,65 @@ export function DealForm({ initialData, clients, profiles }: DealFormProps) {
             />
           </div>
 
+          <div className="space-y-2 sm:col-span-2 border-t pt-4">
+            <h4 className="font-medium mb-4">Product Specifications</h4>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="patch_type">Patch Type</Label>
+            <Controller
+              name="patch_type"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PATCH_TYPES.map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="backing_type">Backing Type</Label>
+            <Controller
+              name="backing_type"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select backing" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {BACKING_TYPES.map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 space-y-0 sm:col-span-2">
+            <div className="space-y-2">
+              <Label htmlFor="patch_width">Width (inches)</Label>
+              <Input id="patch_width" type="number" step="0.01" {...register('patch_width')} placeholder="0.0" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="patch_height">Height (inches)</Label>
+              <Input id="patch_height" type="number" step="0.01" {...register('patch_height')} placeholder="0.0" />
+            </div>
+          </div>
+
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="product_description">Product Description</Label>
             <textarea
@@ -252,6 +327,24 @@ export function DealForm({ initialData, clients, profiles }: DealFormProps) {
               id="expected_close_date"
               type="date"
               {...register('expected_close_date')}
+            />
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="artwork_url">Artwork URL</Label>
+            <Input
+              id="artwork_url"
+              {...register('artwork_url')}
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="promo_code">Promo Code</Label>
+            <Input
+              id="promo_code"
+              {...register('promo_code')}
+              placeholder="e.g. SUMMER20"
             />
           </div>
 
