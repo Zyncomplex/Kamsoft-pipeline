@@ -2,6 +2,7 @@
 
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
+import { SuccessToast } from '@/components/shared/SuccessToast'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+      <SuccessToast />
     </div>
   )
 }

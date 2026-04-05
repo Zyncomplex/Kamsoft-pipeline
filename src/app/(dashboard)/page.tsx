@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { getDashboardStats, getDashboardWidgets } from '@/services/dashboard.service'
 import { StatCard } from '@/components/dashboard/StatCard'
 import { DashboardWidgets } from '@/components/dashboard/DashboardWidgets'
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { DashboardSkeleton } from '@/components/shared/CardSkeleton'
 import { 
   Briefcase, 
   CheckSquare, 
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <Suspense fallback={<div className="flex justify-center py-12"><LoadingSpinner /></div>}>
+      <Suspense fallback={<DashboardSkeleton />}>
         <DashboardOverview />
       </Suspense>
     </div>

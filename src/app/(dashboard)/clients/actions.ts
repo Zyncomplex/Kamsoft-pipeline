@@ -20,7 +20,7 @@ export async function createClientAction(_prevState: unknown, formData: FormData
   }
 
   revalidatePath('/clients')
-  redirect('/clients')
+  redirect('/clients?success=' + encodeURIComponent('Client created successfully'))
 }
 
 export async function updateClientAction(id: string, _prevState: unknown, formData: FormData) {
@@ -39,11 +39,11 @@ export async function updateClientAction(id: string, _prevState: unknown, formDa
 
   revalidatePath(`/clients/${id}`)
   revalidatePath('/clients')
-  redirect(`/clients/${id}`)
+  redirect(`/clients/${id}?success=` + encodeURIComponent('Client updated successfully'))
 }
 
 export async function deleteClientAction(id: string) {
   await deleteClientRecord(id)
   revalidatePath('/clients')
-  redirect('/clients')
+  redirect('/clients?success=' + encodeURIComponent('Client deleted'))
 }

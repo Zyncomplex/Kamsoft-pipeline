@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react'
 import { getProductionOrders } from '@/services/production.service'
 import { ProductionTable } from '@/components/production/ProductionTable'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button-variants'
 import { Plus, Factory, Search } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { TableSkeleton } from '@/components/shared/TableSkeleton'
 
 export const metadata = {
   title: 'Production - Sales Ops CRM',
@@ -52,7 +53,7 @@ export default function ProductionPage() {
         </Button>
       </div>
 
-      <Suspense fallback={<div className="flex justify-center p-12"><LoadingSpinner /></div>}>
+      <Suspense fallback={<TableSkeleton rows={10} columns={6} />}>
         <ProductionList />
       </Suspense>
     </div>

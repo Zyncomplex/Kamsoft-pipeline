@@ -18,7 +18,7 @@ interface VendorsTableProps {
 
 export function VendorsTable({ vendors }: VendorsTableProps) {
   return (
-    <div className="rounded-md border animate-in fade-in duration-500">
+    <div className="rounded-md border animate-in fade-in duration-500 overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>

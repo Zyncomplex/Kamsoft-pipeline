@@ -15,6 +15,7 @@ import { CircleUser, Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { GlobalSearch } from './GlobalSearch'
 
 export function Header() {
   const pathname = usePathname()
@@ -66,8 +67,9 @@ export function Header() {
           </div>
         </SheetContent>
       </Sheet>
-      <div className="w-full flex-1">
-        <h1 className="text-lg font-semibold md:text-xl">{currentTitle}</h1>
+      <div className="w-full flex-1 flex items-center justify-between">
+        <h1 className="text-lg font-semibold md:text-xl hidden sm:block">{currentTitle}</h1>
+        <GlobalSearch />
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger

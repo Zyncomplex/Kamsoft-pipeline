@@ -8,15 +8,47 @@ import { SearchInput } from '@/components/shared/SearchInput'
 import { ClientsTable } from '@/components/clients/ClientsTable'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { Suspense } from 'react'
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { TableSkeleton } from '@/components/shared/TableSkeleton'
 
 interface ClientsPageProps {
   searchParams: Promise<{ search?: string }>
 }
 
+interface ClientsListProps {
+  search?: string
+}
+
+async function ClientsList({ search }: ClientsListProps) {
+  const clients = await getClients(search)
+
+  if (clients.length === 0) {
+    return (
+      <EmptyState
+        title="No clients found"
+        description={
+          search
+            ? `No results for "${search}". Try a different search term.`
+            : "Get started by adding your first client."
+        }
+        action={
+          !search ? (
+            <Link 
+              href="/clients/new" 
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              Add Client
+            </Link>
+          ) : undefined
+        }
+      />
+    )
+  }
+
+  return <ClientsTable clients={clients} />
+}
+
 export default async function ClientsPage({ searchParams }: ClientsPageProps) {
   const { search } = await searchParams
-  const clients = await getClients(search)
 
   return (
     <div className="space-y-6">
@@ -35,29 +67,8 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
         <SearchInput placeholder="Search clients..." />
       </div>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        {clients.length > 0 ? (
-          <ClientsTable clients={clients} />
-        ) : (
-          <EmptyState
-            title="No clients found"
-            description={
-              search
-                ? `No results for "${search}". Try a different search term.`
-                : "Get started by adding your first client."
-            }
-              action={
-                !search ? (
-                  <Link 
-                    href="/clients/new" 
-                    className={cn(buttonVariants({ variant: "outline" }))}
-                  >
-                    Add Client
-                  </Link>
-                ) : undefined
-              }
-          />
-        )}
+      <Suspense fallback={<TableSkeleton rows={8} columns={5} />}>
+        <ClientsList search={search} />
       </Suspense>
     </div>
   )

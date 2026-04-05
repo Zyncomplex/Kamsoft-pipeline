@@ -41,7 +41,7 @@ export async function createShipmentAction(_prevState: unknown, formData: FormDa
 
   revalidatePath('/shipments')
   revalidatePath('/deals')
-  redirect('/shipments')
+  redirect('/shipments?success=' + encodeURIComponent('Shipment scheduled'))
 }
 
 export async function updateShipmentAction(
@@ -68,7 +68,7 @@ export async function updateShipmentAction(
   revalidatePath(`/shipments/${id}`)
   revalidatePath('/shipments')
   revalidatePath('/deals')
-  redirect(`/shipments/${id}`)
+  redirect(`/shipments/${id}?success=` + encodeURIComponent('Shipment updated'))
 }
 
 export async function updateShipmentStatusAction(

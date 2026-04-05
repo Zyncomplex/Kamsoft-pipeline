@@ -8,15 +8,47 @@ import { SearchInput } from '@/components/shared/SearchInput'
 import { VendorsTable } from '@/components/vendors/VendorsTable'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { Suspense } from 'react'
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { TableSkeleton } from '@/components/shared/TableSkeleton'
 
 interface VendorsPageProps {
   searchParams: Promise<{ search?: string }>
 }
 
+interface VendorsListProps {
+  search?: string
+}
+
+async function VendorsList({ search }: VendorsListProps) {
+  const vendors = await getVendors(search)
+
+  if (vendors.length === 0) {
+    return (
+      <EmptyState
+        title="No vendors found"
+        description={
+          search
+            ? `No results for "${search}". Try a different search term.`
+            : "Get started by adding your first vendor."
+        }
+        action={
+          !search ? (
+            <Link 
+              href="/vendors/new" 
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              Add Vendor
+            </Link>
+          ) : undefined
+        }
+      />
+    )
+  }
+
+  return <VendorsTable vendors={vendors} />
+}
+
 export default async function VendorsPage({ searchParams }: VendorsPageProps) {
   const { search } = await searchParams
-  const vendors = await getVendors(search)
 
   return (
     <div className="space-y-6">
@@ -35,29 +67,8 @@ export default async function VendorsPage({ searchParams }: VendorsPageProps) {
         <SearchInput placeholder="Search vendors..." />
       </div>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        {vendors.length > 0 ? (
-          <VendorsTable vendors={vendors} />
-        ) : (
-          <EmptyState
-            title="No vendors found"
-            description={
-              search
-                ? `No results for "${search}". Try a different search term.`
-                : "Get started by adding your first vendor."
-            }
-            action={
-              !search ? (
-                <Link 
-                  href="/vendors/new" 
-                  className={cn(buttonVariants({ variant: "outline" }))}
-                >
-                  Add Vendor
-                </Link>
-              ) : undefined
-            }
-          />
-        )}
+      <Suspense fallback={<TableSkeleton rows={8} columns={5} />}>
+        <VendorsList search={search} />
       </Suspense>
     </div>
   )

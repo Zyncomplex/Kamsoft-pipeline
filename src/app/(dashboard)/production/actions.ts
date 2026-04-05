@@ -41,7 +41,7 @@ export async function createProductionAction(_prevState: unknown, formData: Form
 
   revalidatePath('/production')
   revalidatePath('/deals')
-  redirect('/production')
+  redirect('/production?success=' + encodeURIComponent('Production order initiated'))
 }
 
 export async function updateProductionAction(
@@ -68,7 +68,7 @@ export async function updateProductionAction(
   revalidatePath(`/production/${id}`)
   revalidatePath('/production')
   revalidatePath('/deals')
-  redirect(`/production/${id}`)
+  redirect(`/production/${id}?success=` + encodeURIComponent('Production order updated'))
 }
 
 export async function updateProductionStatusAction(

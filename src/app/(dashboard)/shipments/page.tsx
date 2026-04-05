@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react'
 import { getShipments } from '@/services/shipments.service'
 import { ShipmentTable } from '@/components/shipments/ShipmentTable'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button-variants'
 import { Plus, Truck, Search } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
+import { TableSkeleton } from '@/components/shared/TableSkeleton'
 
 export const metadata = {
   title: 'Shipments - Sales Ops CRM',
@@ -51,7 +52,7 @@ export default function ShipmentsPage() {
         </Button>
       </div>
 
-      <Suspense fallback={<div className="flex justify-center p-12"><LoadingSpinner /></div>}>
+      <Suspense fallback={<TableSkeleton rows={10} columns={6} />}>
         <ShipmentsList />
       </Suspense>
     </div>

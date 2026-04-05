@@ -34,7 +34,7 @@ export async function createDealAction(_prevState: unknown, formData: FormData) 
   }
 
   revalidatePath('/deals')
-  redirect('/deals')
+  redirect('/deals?success=' + encodeURIComponent('Deal created successfully'))
 }
 
 export async function updateDealAction(id: string, _prevState: unknown, formData: FormData) {
@@ -54,7 +54,7 @@ export async function updateDealAction(id: string, _prevState: unknown, formData
 
   revalidatePath(`/deals/${id}`)
   revalidatePath('/deals')
-  redirect(`/deals/${id}`)
+  redirect(`/deals/${id}?success=` + encodeURIComponent('Deal updated successfully'))
 }
 
 export async function updateDealStageAction(id: string, newStage: string, previousStage: string) {
@@ -66,4 +66,16 @@ export async function updateDealStageAction(id: string, newStage: string, previo
 
   revalidatePath('/deals')
   return { success: true }
+}
+
+export async function markDealAsLostAction(id: string) {
+  try {
+    await updateDealRecord(id, { stage: 'lost' })
+  } catch (err: unknown) {
+    return { message: err instanceof Error ? err.message : String(err) }
+  }
+
+  revalidatePath('/deals')
+  revalidatePath(`/deals/${id}`)
+  redirect(`/deals/${id}?success=` + encodeURIComponent('Deal marked as lost'))
 }

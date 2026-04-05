@@ -34,7 +34,7 @@ export async function createTaskAction(_prevState: unknown, formData: FormData) 
 
   revalidatePath('/tasks')
   revalidatePath('/deals')
-  redirect('/tasks')
+  redirect('/tasks?success=' + encodeURIComponent('Task created successfully'))
 }
 
 export async function completeTaskAction(id: string) {
@@ -66,5 +66,5 @@ export async function updateTaskAction(id: string, _prevState: unknown, formData
 
   revalidatePath('/tasks')
   revalidatePath('/deals')
-  redirect('/tasks')
+  redirect('/tasks?success=' + encodeURIComponent('Task updated successfully'))
 }

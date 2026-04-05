@@ -20,7 +20,7 @@ export async function createVendorAction(_prevState: unknown, formData: FormData
   }
 
   revalidatePath('/vendors')
-  redirect('/vendors')
+  redirect('/vendors?success=' + encodeURIComponent('Vendor created successfully'))
 }
 
 export async function updateVendorAction(id: string, _prevState: unknown, formData: FormData) {
@@ -39,11 +39,11 @@ export async function updateVendorAction(id: string, _prevState: unknown, formDa
 
   revalidatePath(`/vendors/${id}`)
   revalidatePath('/vendors')
-  redirect(`/vendors/${id}`)
+  redirect(`/vendors/${id}?success=` + encodeURIComponent('Vendor updated successfully'))
 }
 
 export async function deleteVendorAction(id: string) {
   await deleteVendorRecord(id)
   revalidatePath('/vendors')
-  redirect('/vendors')
+  redirect('/vendors?success=' + encodeURIComponent('Vendor deleted'))
 }

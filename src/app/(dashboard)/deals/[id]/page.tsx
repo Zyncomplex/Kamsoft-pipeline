@@ -13,11 +13,13 @@ import { ShipmentTable } from '@/components/shipments/ShipmentTable'
 import { ActivityTimeline } from '@/components/shared/ActivityTimeline'
 import { DEAL_STAGES } from '@/lib/constants'
 import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button-variants'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
+import { DealLostButton } from '@/components/deals/DealActions'
 import { 
   Edit, 
   Plus, 
@@ -88,6 +90,9 @@ export default async function DealDetailPage({ params }: DealPageProps) {
             <Plus className="h-4 w-4" />
             Add Task
           </Link>
+          {deal.stage !== 'lost' && deal.stage !== 'completed' && (
+            <DealLostButton dealId={id} />
+          )}
         </div>
       </div>
 

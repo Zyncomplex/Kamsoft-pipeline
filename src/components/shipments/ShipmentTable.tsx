@@ -50,7 +50,7 @@ export function ShipmentTable({ shipments }: ShipmentTableProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div className="bg-white rounded-xl shadow-sm border overflow-x-auto">
       <Table>
         <TableHeader className="bg-slate-50/50">
           <TableRow>
